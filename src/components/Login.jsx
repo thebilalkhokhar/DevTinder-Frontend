@@ -1,22 +1,32 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
+import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../utils/constants";
 
 const Login = () => {
   const [email, setEmail] = useState("bilal@gmail.com");
   const [password, setPassword] = useState("Bilal01@");
-
-  const handleLoginSubmit = async (e) => {
-    e.preventDefault();
-    const res = await axios.post(
-      "http://localhost:7777/login",
-      {
-        email,
-        password,
-      },
-      {
-        withCredentials: true,
-      }
-    );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleLoginSubmit = async () => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/login",
+        {
+          email,
+          password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(addUser(res.data));
+      return navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
@@ -70,7 +80,6 @@ const Login = () => {
               type="password"
               required
               placeholder="Password"
-              minlength="8"
               pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
               title="Must be more than 8 characters, including number, lowercase letter, uppercase letter"
               value={password}
