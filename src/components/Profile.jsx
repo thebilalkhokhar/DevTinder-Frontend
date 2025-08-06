@@ -1,7 +1,12 @@
 import React from "react";
+import EditProfileForm from "./EditProfileForm";
 
 const Profile = () => {
-  return <div>Profile</div>;
+  return (
+    <div>
+      <EditProfileForm />
+    </div>
+  );
 };
 
 export default Profile;
