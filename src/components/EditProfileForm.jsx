@@ -1,39 +1,42 @@
 import React, { useState } from "react";
+import FeedCard from "./FeedCard";
+import axios from "axios";
+import { BASE_URL } from "../utils/constants";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/userSlice";
 
-const EditProfileForm = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("example@example.com");
-  const [bio, setBio] = useState("");
-  const [photoUrl, setPhotoUrl] = useState("");
-  const [skills, setSkills] = useState("");
+const EditProfileForm = ({ user }) => {
+  const dispatch = useDispatch();
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [lastName, setLastName] = useState(user.lastName);
+  const [email, setEmail] = useState(user.email);
+  const [bio, setBio] = useState(user.bio);
+  const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
+  const [skills, setSkills] = useState(user.skills);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // prevent page reload
+  const saveProfile = async (e) => {
+    e.preventDefault();
 
-    const skillsArray = skills
-      .split(",")
-      .map((s) => s.trim())
-      .filter((s) => s !== "");
-
-    const updatedProfile = {
-      firstName,
-      lastName,
-      email,
-      bio,
-      photoUrl,
-      skills: skillsArray,
-    };
-
-    console.log("Form submitted:", updatedProfile);
-    // Add API call or logic here
+    try {
+      const res = await axios.patch(
+        BASE_URL + "/profile/update",
+        { firstName, lastName, bio, photoUrl, skills },
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(addUser(res.data.data));
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   return (
-    <div className="min-h-[calc(100vh-80px)]">
+    <div className="flex items-center justify-center my-20">
       <form
-        onSubmit={handleSubmit}
-        className="max-w-xl mx-auto p-6 sm:p-8 space-y-6 bg-base-100 rounded-xl shadow-md"
+        onSubmit={saveProfile}
+        className="bg-base-300 max-w-xl p-6 sm:p-8 space-y-6 rounded-xl shadow-md"
       >
         <h2 className="text-2xl font-semibold text-center">Edit Profile</h2>
 
@@ -118,12 +121,17 @@ const EditProfileForm = () => {
         </div>
 
         {/* Submit */}
-        <div className="form-control pt-4">
+        <div className=" btn-primary form-control pt-4">
           <button type="submit" className="btn w-full">
             Save Changes
           </button>
         </div>
       </form>
+      <div className="max-w-xl mx-8">
+        <FeedCard
+          user={{ firstName, lastName, email, bio, photoUrl, skills }}
+        />
+      </div>
     </div>
   );
 };

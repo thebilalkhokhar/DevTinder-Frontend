@@ -1,11 +1,16 @@
 import React from "react";
 import EditProfileForm from "./EditProfileForm";
+import { useSelector } from "react-redux";
+import FeedCard from "./FeedCard";
 
 const Profile = () => {
+  const user = useSelector((store) => store.user);
   return (
-    <div>
-      <EditProfileForm />
-    </div>
+    user && (
+      <div>
+        <EditProfileForm user={user} />
+      </div>
+    )
   );
 };
 
