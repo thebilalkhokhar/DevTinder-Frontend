@@ -10,9 +10,9 @@ const EditProfileForm = ({ user }) => {
   const [firstName, setFirstName] = useState(user.firstName);
   const [lastName, setLastName] = useState(user.lastName);
   const [email, setEmail] = useState(user.email);
-  const [bio, setBio] = useState(user.bio);
-  const [photoUrl, setPhotoUrl] = useState(user.photoUrl);
-  const [skills, setSkills] = useState(user.skills);
+  const [bio, setBio] = useState(user.bio || "");
+  const [photoUrl, setPhotoUrl] = useState(user.photoUrl || "");
+  const [skills, setSkills] = useState(user.skills || []);
   const [error, setError] = useState("");
 
   const saveProfile = async (e) => {
