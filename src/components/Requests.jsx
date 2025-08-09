@@ -28,7 +28,6 @@ const Requests = () => {
       const res = await axios.get(BASE_URL + "/user/requests/received", {
         withCredentials: true,
       });
-      console.log("data", res);
       dispatch(addRequests(res.data.data));
     } catch (err) {
       console.error("Error fetching requests:", err);
