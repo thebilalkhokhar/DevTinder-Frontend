@@ -1,12 +1,27 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequests } from "../utils/requestsSlice";
+import { addRequests, removeRequest } from "../utils/requestsSlice";
 import { useEffect } from "react";
 import { BASE_URL } from "../utils/constants";
 
 const Requests = () => {
   const requests = useSelector((store) => store.requests || []);
   const dispatch = useDispatch();
+
+  const handleRequest = async (status, _id) => {
+    try {
+      const res = await axios.post(
+        BASE_URL + "/request/respond/" + status + "/" + _id,
+        {},
+        {
+          withCredentials: true,
+        }
+      );
+      dispatch(removeRequest(_id));
+    } catch (err) {
+      console.error("Error handling request:", err);
+    }
+  };
 
   const fetchRequests = async () => {
     try {
@@ -67,10 +82,16 @@ const Requests = () => {
 
                   {/* Action Buttons */}
                   <div className="mt-5 flex gap-3">
-                    <button className="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors">
+                    <button
+                      className="px-4 py-2 bg-green-500 text-white text-sm font-medium rounded-lg hover:bg-green-600 transition-colors"
+                      onClick={() => handleRequest("accepted", _id)}
+                    >
                       Accept
                     </button>
-                    <button className="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors">
+                    <button
+                      className="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition-colors"
+                      onClick={() => handleRequest("rejected", _id)}
+                    >
                       Reject
                     </button>
                   </div>
