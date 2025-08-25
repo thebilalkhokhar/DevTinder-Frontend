@@ -58,9 +58,9 @@ const Navbar = () => {
               <li>
                 <Link to="/requests">Requests</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/premium">Premium</Link>
-              </li>
+              </li> */}
               <li>
                 <Link to="/chat">Chat</Link>
               </li>
