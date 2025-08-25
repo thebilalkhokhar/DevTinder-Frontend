@@ -61,9 +61,9 @@ const Navbar = () => {
               {/* <li>
                 <Link to="/premium">Premium</Link>
               </li> */}
-              <li>
+              {/* <li>
                 <Link to="/chat">Chat</Link>
-              </li>
+              </li> */}
               <li>
                 <a onClick={handleLogout}>Logout</a>
               </li>
