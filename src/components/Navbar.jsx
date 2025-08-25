@@ -36,7 +36,10 @@ const Navbar = () => {
               className="btn btn-ghost btn-circle avatar"
             >
               <div className="w-10 rounded-full">
-                <img alt="Tailwind CSS Navbar component" src={user.photoUrl} />
+                <img
+                  alt="Tailwind CSS Navbar component"
+                  src={user.photoUrl || "https://placehold.co/600x400"}
+                />
               </div>
             </div>
             <ul
@@ -57,6 +60,9 @@ const Navbar = () => {
               </li>
               <li>
                 <Link to="/premium">Premium</Link>
+              </li>
+              <li>
+                <Link to="/chat">Chat</Link>
               </li>
               <li>
                 <a onClick={handleLogout}>Logout</a>
